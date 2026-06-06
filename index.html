@@ -613,12 +613,12 @@
 
 <script>
 const prizes = [
-  { label: "Coffee",    emoji: "☕", color: "#C9A84C", dark: "#8B6914", sub: "Enjoy a coffee on us!" },
-  { label: "R100 Free Bet", emoji: "💰", color: "#00843D", dark: "#005C2A", sub: "Redeem at betmgm.co.za — T&Cs apply." },
-  { label: "Donut",     emoji: "🍩", color: "#C8102E", dark: "#8B0B1F", sub: "Grab a fresh donut on us!" },
-  { label: "BetMGM Pen",emoji: "✏️", color: "#1A1A1A", dark: "#000000", sub: "A quality keepsake from BetMGM." },
-  { label: "Diary",     emoji: "📓", color: "#C9A84C", dark: "#8B6914", sub: "Your new BetMGM branded diary!" },
-  { label: "Try Again", emoji: "🎯", color: "#00843D", dark: "#005C2A", sub: "Better luck next spin — give it another go!" },
+  { label: "Coffee",     emoji: "☕", color: "#C9A84C", dark: "#8B6914", sub: "Enjoy a coffee on us!" },
+  { label: "Muffin",     emoji: "🧁", color: "#C8102E", dark: "#8B0B1F", sub: "Grab a fresh muffin on us!" },
+  { label: "Croissant",  emoji: "🥐", color: "#c0a971", dark: "#8B6914", sub: "Enjoy a warm croissant on us!" },
+  { label: "BetMGM Cup", emoji: "🍵", color: "#1A1A1A", dark: "#000000", sub: "A quality BetMGM branded cup — yours to keep!" },
+  { label: "BetMGM Lanyard", emoji: "🎫", color: "#00843D", dark: "#005C2A", sub: "A BetMGM branded lanyard — wear it with pride!" },
+  { label: "Try Again",  emoji: "🎯", color: "#C8102E", dark: "#8B0B1F", sub: "Better luck next spin — give it another go!" },
 ];
 
 const canvas = document.getElementById('wheel');
@@ -695,23 +695,32 @@ function drawWheel(angle) {
     ctx.fillStyle = 'rgba(255,255,255,0.04)';
     ctx.fill();
 
-    // Text
     ctx.save();
     ctx.translate(CX, CY);
     ctx.rotate(start + ARC / 2);
-    ctx.textAlign = 'right';
 
-    // Emoji
-    ctx.font = `${W * 0.057}px serif`;
-    ctx.fillText(p.emoji, R * 0.88, W * 0.022);
+    // Move to segment midpoint
+    const segMid = R * 0.62;
+    ctx.translate(segMid, 0);
+    ctx.rotate(Math.PI / 2); // rotate so text reads upward along segment
 
-    // Label
+    ctx.textAlign = 'center';
+
+    // Label at top
     ctx.fillStyle = '#FFFFFF';
     ctx.shadowColor = 'rgba(0,0,0,0.8)';
     ctx.shadowBlur = 6;
-    ctx.font = `800 ${W * 0.038}px 'Barlow Condensed', sans-serif`;
-    ctx.fillText(p.label.toUpperCase(), R * 0.62, W * 0.022);
+    let fontSize;
+    if (p.label.length > 12) fontSize = W * 0.022;
+    else if (p.label.length > 7) fontSize = W * 0.027;
+    else fontSize = W * 0.036;
+    ctx.font = `800 ${fontSize}px 'Barlow Condensed', sans-serif`;
+    ctx.fillText(p.label.toUpperCase(), 0, -W * 0.02);
     ctx.shadowBlur = 0;
+
+    // Emoji below label
+    ctx.font = `${W * 0.06}px serif`;
+    ctx.fillText(p.emoji, 0, W * 0.04);
 
     ctx.restore();
   }
